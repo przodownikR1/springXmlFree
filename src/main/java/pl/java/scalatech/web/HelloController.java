@@ -47,6 +47,7 @@ public class HelloController {
     @XmlRootElement
     public static class SimpleModel {
         @Getter
+        @Setter
         private String name;
         @Getter
         @XmlJavaTypeAdapter( LocalDateAdapter.class )
