@@ -12,10 +12,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import pl.java.scalatech.service.invoice.InvoiceService;
 
 /**
  * @author Sławomir Borowiec 
@@ -26,7 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
     public static final String RESPONSE_BODY = "Spring xml free";
-
+    @Autowired
+    private InvoiceService InvoiceService;
+    
     @RequestMapping(value = "/hello", produces = MediaType.TEXT_PLAIN_VALUE)
     public String sayHello() {
         return RESPONSE_BODY;

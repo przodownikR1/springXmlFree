@@ -1,11 +1,17 @@
 package pl.java.scalatech.service.invoice.impl;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import pl.java.scalatech.domain.Invoice;
+import pl.java.scalatech.domain.InvoiceType;
 import pl.java.scalatech.repository.InvoiceRepository;
 import pl.java.scalatech.service.invoice.InvoiceService;
 
@@ -24,6 +30,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Autowired
     public InvoiceServiceImpl(InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
+        Date date = new Date(LocalDate.of(2015, 1, 1).toEpochDay());
+        invoiceRepository.save(new Invoice.InvoiceBuilder("slawek", "borowiec", new BigDecimal(12), InvoiceType.BUSINESS, date).build());
+        date = new Date(LocalDate.of(2015, 1, 2).toEpochDay());
+        invoiceRepository.save(new Invoice.InvoiceBuilder("slawek2", "borowiec2", new BigDecimal(12), InvoiceType.BUSINESS, date).build());
     }
 
     @Override

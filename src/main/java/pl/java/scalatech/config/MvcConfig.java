@@ -4,9 +4,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.util.UrlPathHelper;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -20,7 +23,7 @@ import org.thymeleaf.templateresolver.TemplateResolver;
  */
 @Configuration
 @ComponentScan({"pl.java.scalatech.web","pl.java.scalatech.initializer"})
-@Import({DsConfig.class,ServiceConfig.class})
+@Import({DsConfig.class,ServiceConfig.class,RepositoryRestMvcConfiguration.class})
 @EnableWebMvc
 public class MvcConfig extends WebMvcConfigurerAdapter{
     //static resource
@@ -31,6 +34,16 @@ public class MvcConfig extends WebMvcConfigurerAdapter{
         registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(31556926);
         registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
     }*/
+    
+    
+    
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        UrlPathHelper urlPathHelper = new UrlPathHelper();
+        urlPathHelper.setRemoveSemicolonContent(false);
+        configurer.setUrlPathHelper(urlPathHelper);
+    }
+
     
     @Bean
     public TemplateResolver templateResolver(){
