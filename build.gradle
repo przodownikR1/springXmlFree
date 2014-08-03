@@ -53,11 +53,9 @@ sourceSets {
         compile ("org.thymeleaf:thymeleaf-spring3:${thymeleafVersion}")
         compile ("javax.servlet:javax.servlet-api:${servletVersion}")
         
-        compile ("org.springframework.data:spring-data-neo4j-rest:3.0.0.RELEASE")
-       
-        compile ("org.springframework.data:spring-data-neo4j:3.0.0.RELEASE")
+    
         compile ("org.springframework.data:spring-data-jpa:${springDataJPAVersion}")
-        compile ("org.springframework.hateoas:spring-hateoas:0.7.0.RELEASE")
+        compile ("org.springframework.data:spring-data-rest-webmvc:2.1.2.RELEASE")
         
         
         compile ("javax.validation:validation-api:${javaxValidationVersion}")

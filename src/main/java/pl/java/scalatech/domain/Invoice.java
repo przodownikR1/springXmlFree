@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,6 +47,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper=false)
+@NoArgsConstructor
 @NamedQueries({ @NamedQuery(name = "Invoice.findByUser", query = "FROM Invoice inv WHERE inv.user = :user ") })
 public class Invoice extends AbstactId {
 
@@ -58,13 +60,13 @@ public class Invoice extends AbstactId {
     @XmlAttribute(name = "paid")
     private boolean paid;
 
-    @Past
+    //@Past
     @XmlElement(name = "create_date", required = true)
     @XmlJavaTypeAdapter(DateAdapter.class)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date creataDate;
 
-    @Future
+   // @Future
     @XmlElement(name = "pay_date", required = true)
     @XmlJavaTypeAdapter(DateAdapter.class)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
