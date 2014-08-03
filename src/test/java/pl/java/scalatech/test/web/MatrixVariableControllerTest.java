@@ -3,6 +3,7 @@ package pl.java.scalatech.test.web;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,6 +32,11 @@ public class MatrixVariableControllerTest {
     @Before
     public void setup() {
         this.mockMvc = webAppContextSetup(this.wac).build();
+    }
+
+    @Test
+    public void shouldMatrixWork() {
+
     }
 
 }
