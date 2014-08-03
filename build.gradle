@@ -8,7 +8,7 @@ apply plugin: 'pmd'
 apply plugin: 'war'
 apply plugin: 'project-report'
 apply plugin: 'build-dashboard'
-apply plugin: 'codenarc'
+//apply plugin: 'codenarc'
 apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
 apply from: './properties.gradle'
 
