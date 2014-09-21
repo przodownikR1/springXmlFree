@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
@@ -41,6 +42,7 @@ import pl.java.scalatech.interceptor.PerformanceInterceptor;
 @ComponentScan({ "pl.java.scalatech.web", "pl.java.scalatech.initializer" })
 @Import({ DsConfig.class, ServiceConfig.class, RepositoryRestMvcConfiguration.class })
 @EnableWebMvc
+//@Profile(value="dev")
 public class MvcConfig extends WebMvcConfigurerAdapter {
     // static resource
 
@@ -51,7 +53,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/META-INF/resources/webjars/").setCachePeriod(31556926);
         registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
-        registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(31556926);
+        registry.addResourceHandler("/images/**").addResourceLocations("/images/").setCachePeriod(31556926);
         registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
     }
 
@@ -106,28 +108,17 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
         if (profiles.contains("dev")) {
             templateResolver.setCacheable(false);
+            System.err.println("============================");
+            
         }
+        //TODO
+        templateResolver.setCacheable(false);
         templateResolver.setCharacterEncoding("UTF-8");
         templateResolver.setOrder(2);
         return templateResolver;
     }
 
-    /*
-     * @Bean
-     * public TemplateResolver templateResolver() {
-     * ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
-     * templateResolver.setPrefix("WEB-INF/templates/");
-     * templateResolver.setSuffix(".html");
-     * templateResolver.setTemplateMode("HTML5");
-     * List<String> profiles = Arrays.asList(env.getActiveProfiles());
-     * if (profiles.contains("dev")) {
-     * templateResolver.setCacheable(false);
-     * }
-     * templateResolver.setCharacterEncoding("UTF-8");
-     * templateResolver.setOrder(2);
-     * return templateResolver;
-     * }
-     */
+  
 
     @Bean
     public SpringTemplateEngine templateEngine() {

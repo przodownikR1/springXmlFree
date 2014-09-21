@@ -1,6 +1,9 @@
 package pl.java.scalatech.web;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -13,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexPage {
 
     @RequestMapping("/")
-    String info() {
+    String info(Model map) {
+        
+        map.asMap().put("currentTime", LocalDate.now());
+        map.asMap().put("greeting", "Hi :)");
         return "info";
     }
 
