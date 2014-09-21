@@ -3,13 +3,14 @@ package pl.java.scalatech.config;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
@@ -42,6 +43,7 @@ import pl.java.scalatech.interceptor.PerformanceInterceptor;
 @ComponentScan({ "pl.java.scalatech.web", "pl.java.scalatech.initializer" })
 @Import({ DsConfig.class, ServiceConfig.class, RepositoryRestMvcConfiguration.class })
 @EnableWebMvc
+@Slf4j
 //@Profile(value="dev")
 public class MvcConfig extends WebMvcConfigurerAdapter {
     // static resource
@@ -108,8 +110,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
         if (profiles.contains("dev")) {
             templateResolver.setCacheable(false);
-            System.err.println("============================");
-            
+
         }
         //TODO
         templateResolver.setCacheable(false);

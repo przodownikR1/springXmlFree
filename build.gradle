@@ -64,6 +64,9 @@ sourceSets {
         compile ("javax.validation:validation-api:${javaxValidationVersion}")
         compile ("org.hibernate:hibernate-validator:${hibernateValidatorVersion}")
         compile ("org.hibernate:hibernate-core:${hibernateVersion}")
+        compile ("javax.el:el-api:2.2")
+        compile ("org.glassfish.web:el-impl:2.2")
+        
         compile ("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
     
         compile ("com.sun.jersey:jersey-bundle:1.18")
