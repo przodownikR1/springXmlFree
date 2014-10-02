@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
@@ -40,9 +39,9 @@ import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
-import com.google.common.collect.Lists;
-
 import pl.java.scalatech.interceptor.PerformanceInterceptor;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Sławomir Borowiec
@@ -54,36 +53,30 @@ import pl.java.scalatech.interceptor.PerformanceInterceptor;
 @Import({ DsConfig.class, ServiceConfig.class, RepositoryRestMvcConfiguration.class })
 @EnableWebMvc
 @Slf4j
-//@Profile(value="dev")
+// @Profile(value="dev")
 public class MvcConfig extends WebMvcConfigurerAdapter {
     // static resource
 
     @Autowired
     private Environment env;
 
-    
     @Bean
     @Primary
     public ViewResolver contentNegotiatingViewResolver(final ViewResolver soyViewResolver) throws Exception {
-    final ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
-    List resolvers = Lists.newArrayList(new BeanNameViewResolver(),templateResolver());
-    contentNegotiatingViewResolver.setViewResolvers(resolvers);
-    contentNegotiatingViewResolver.setDefaultViews(Lists.<View>newArrayList(new MappingJackson2JsonView()));
-    return contentNegotiatingViewResolver;
+        final ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
+        List resolvers = Lists.newArrayList(new BeanNameViewResolver(), templateResolver());
+        contentNegotiatingViewResolver.setViewResolvers(resolvers);
+        contentNegotiatingViewResolver.setDefaultViews(Lists.<View> newArrayList(new MappingJackson2JsonView()));
+        return contentNegotiatingViewResolver;
     }
-    
+
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-      configurer.favorPathExtension(true).
-              favorParameter(true).
-              parameterName("mediaType").
-              ignoreAcceptHeader(false).
-              defaultContentType(MediaType.APPLICATION_JSON).
-              mediaType("xml", MediaType.APPLICATION_XML).
-              mediaType("json", MediaType.APPLICATION_JSON);
-      
+        configurer.favorPathExtension(true).favorParameter(true).parameterName("mediaType").ignoreAcceptHeader(false)
+                .defaultContentType(MediaType.APPLICATION_JSON).mediaType("xml", MediaType.APPLICATION_XML).mediaType("json", MediaType.APPLICATION_JSON);
+
     }
-    
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/META-INF/resources/webjars/").setCachePeriod(31556926);
@@ -144,17 +137,14 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
         if (profiles.contains("dev")) {
             templateResolver.setCacheable(false);
-            log.info("++++ templateResolver cache off ... -> dev");
-            
+
         }
-        //TODO
+        // TODO
         templateResolver.setCacheable(false);
         templateResolver.setCharacterEncoding("UTF-8");
         templateResolver.setOrder(2);
         return templateResolver;
     }
-
-  
 
     @Bean
     public SpringTemplateEngine templateEngine() {
