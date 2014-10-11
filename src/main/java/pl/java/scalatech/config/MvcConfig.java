@@ -46,7 +46,7 @@ import pl.java.scalatech.interceptor.PerformanceInterceptor;
  */
 @Configuration
 @ComponentScan({ "pl.java.scalatech.web", "pl.java.scalatech.initializer" })
-@Import({ DsConfig.class, ServiceConfig.class, RepositoryRestMvcConfiguration.class })
+@Import({ DsConfig.class, ServiceConfig.class, RepositoryRestMvcConfiguration.class, AOPConfig.class })
 @EnableWebMvc
 @Slf4j
 //@Profile(value="dev")
