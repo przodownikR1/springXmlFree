@@ -28,6 +28,7 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.util.UrlPathHelper;
@@ -67,13 +68,14 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(perfInterceptor());
         registry.addInterceptor(localeChangeInterceptor());
+
     }
 
     @Bean
     public LocaleResolver localeResolver() {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.forLanguageTag(env.getProperty("language")));
-        return slr;
+        CookieLocaleResolver clr = new CookieLocaleResolver();
+        clr.setDefaultLocale(Locale.forLanguageTag(env.getProperty("language")));
+        return clr;
     }
 
     @Bean
@@ -83,6 +85,15 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         return lci;
     }
 
+    @Bean(name = AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME)
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasenames("classpath:/i18n/messages");
+        messageSource.setUseCodeAsDefaultMessage(true);
+        messageSource.setCacheSeconds(10);
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
 
     @Bean
     public PerformanceInterceptor perfInterceptor() {
@@ -107,12 +118,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         return standardServletMultipartResolver;
     }
 
-    @Bean(name = AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME)
-    public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:messages");
-        return messageSource;
-    }
+
 
     @Override
     public Validator getValidator() {
