@@ -15,7 +15,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -160,4 +162,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         viewResolver.setOrder(1);
         return viewResolver;
     }
+
+
 }
