@@ -14,11 +14,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -35,10 +32,9 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 /**
- * @author Sławomir Borowiec 
- * Module name : spring4WithoutXml
- * Creating time :  31 lip 2014 17:55:18
- 
+ * @author Sławomir Borowiec
+ *         Module name : spring4WithoutXml
+ *         Creating time : 31 lip 2014 17:55:18
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -46,10 +42,10 @@ import org.springframework.format.annotation.NumberFormat.Style;
 @Table(name = "simple_invoice")
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ToString(callSuper=false)
+@ToString(callSuper = false)
 @NoArgsConstructor
-@NamedQueries({ @NamedQuery(name = "Invoice.findByUser", query = "FROM Invoice inv WHERE inv.user = :user ") })
-public class Invoice extends AbstactId {
+@NamedQueries({ @NamedQuery(name = "Invoice.findByUser", query = "FROM Invoice inv WHERE inv.createdBy = :user ") })
+public class Invoice extends AuditableEntity {
 
     private static final long serialVersionUID = -7305875286472112192L;
 
@@ -60,20 +56,17 @@ public class Invoice extends AbstactId {
     @XmlAttribute(name = "paid")
     private boolean paid;
 
-    //@Past
+    // @Past
     @XmlElement(name = "create_date", required = true)
     @XmlJavaTypeAdapter(DateAdapter.class)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date creataDate;
 
-   // @Future
+    // @Future
     @XmlElement(name = "pay_date", required = true)
     @XmlJavaTypeAdapter(DateAdapter.class)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date payDate;
-
-    @Size(min = 3, max = 20)
-    private String user;
 
     @Transient
     private String description;
@@ -91,7 +84,6 @@ public class Invoice extends AbstactId {
 
     public Invoice(InvoiceBuilder invoiceBuilder) {
         this.name = checkNotNull(invoiceBuilder.name, "invoice name can't be null");
-        this.user = checkNotNull(invoiceBuilder.user, "invoice user can't be null");
         this.payDate = checkNotNull(invoiceBuilder.payDate, "invoice payDate can't be null");
         this.amount = checkNotNull(invoiceBuilder.amount, "invoice amount can't be null");
         this.type = checkNotNull(invoiceBuilder.type, "invoice type can't be null");
@@ -102,14 +94,14 @@ public class Invoice extends AbstactId {
         private boolean paid;
         private Date createDate;
         private final Date payDate;
-        private final String user;
+
         private String description;
         private final BigDecimal amount;
         private final InvoiceType type;
 
-        public InvoiceBuilder(String name, String user, BigDecimal amount, InvoiceType type, Date payDate) {
+        public InvoiceBuilder(String name, BigDecimal amount, InvoiceType type, Date payDate) {
             this.name = name;
-            this.user = user;
+
             this.amount = amount;
             this.type = type;
             this.payDate = payDate;

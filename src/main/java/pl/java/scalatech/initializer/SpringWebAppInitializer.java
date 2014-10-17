@@ -2,28 +2,51 @@ package pl.java.scalatech.initializer;
 
 import java.util.EnumSet;
 
+import javax.servlet.FilterRegistration.Dynamic;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.WebApplicationInitializer;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-/**
- * @author Sławomir Borowiec
- *         Module name : spring4WithoutXml
- *         Creating time : 31 lip 2014 17:55:29
- */
-public class WebInitializer implements WebApplicationInitializer {
+import pl.java.scalatech.config.AppConfig;
+import pl.java.scalatech.config.MvcConfig;
+
+public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class<?>[] { AppConfig.class };
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class<?>[] { MvcConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[] { "/" };
+    }
+
+    @Override
+    protected void registerContextLoaderListener(ServletContext servletContext) {
+        super.registerContextLoaderListener(servletContext);
+        servletContext.addListener(new HttpSessionEventPublisher());
+        DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
+        Dynamic filter = servletContext.addFilter("springSecurityFilterChain", delegatingFilterProxy);
+        filter.addMappingForUrlPatterns(null, true, "/*");
+    }
 
     private static final String CONFIG_LOCATION = "pl.java.scalatech.config";
     private static final String MAPPING_URL = "/*";

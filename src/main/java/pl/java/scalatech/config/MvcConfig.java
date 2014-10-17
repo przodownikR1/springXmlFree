@@ -51,7 +51,7 @@ import com.google.common.collect.Lists;
  */
 @Configuration
 @ComponentScan({ "pl.java.scalatech.web", "pl.java.scalatech.initializer" })
-@Import({ DsConfig.class, ServiceConfig.class, RepositoryRestMvcConfiguration.class })
+@Import({ SecurityBasicConfig.class})
 @EnableWebMvc
 @Slf4j
 // @Profile(value="dev")
@@ -98,6 +98,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/welcome").setViewName("welcome");
+        registry.addViewController("/").setViewName("welcome");
     }
 
     @Override

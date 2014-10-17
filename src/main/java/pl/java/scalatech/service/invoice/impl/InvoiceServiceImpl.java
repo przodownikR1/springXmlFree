@@ -31,9 +31,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceServiceImpl(InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
         Date date = new Date(LocalDate.of(2015, 1, 1).toEpochDay());
-        invoiceRepository.save(new Invoice.InvoiceBuilder("slawek", "borowiec", new BigDecimal(12), InvoiceType.BUSINESS, date).build());
+        invoiceRepository.save(new Invoice.InvoiceBuilder("slawek", new BigDecimal(12), InvoiceType.BUSINESS, date).build());
         date = new Date(LocalDate.of(2015, 1, 2).toEpochDay());
-        invoiceRepository.save(new Invoice.InvoiceBuilder("slawek2", "borowiec2", new BigDecimal(12), InvoiceType.BUSINESS, date).build());
+        invoiceRepository.save(new Invoice.InvoiceBuilder("slawek2", new BigDecimal(12), InvoiceType.BUSINESS, date).build());
     }
 
     @Override

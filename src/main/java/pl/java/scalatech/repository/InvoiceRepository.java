@@ -12,7 +12,7 @@ import pl.java.scalatech.domain.Invoice;
  *         Creating time : 25 lip 2014 13:23:13
  */
 
-@RepositoryRestResource(collectionResourceRel = "invoice", path = "invoice")
+//@RepositoryRestResource(collectionResourceRel = "invoice", path = "invoice")
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     Invoice findByName(@Param("name") String name);
 }
