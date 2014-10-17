@@ -2,6 +2,7 @@ package pl.java.scalatech.config;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,6 +39,8 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
 import pl.java.scalatech.interceptor.PerformanceInterceptor;
+import ro.isdc.wro.manager.factory.ConfigurableWroManagerFactory;
+import ro.isdc.wro.manager.factory.WroManagerFactory;
 
 import com.google.common.collect.Lists;
 
@@ -155,4 +158,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         viewResolver.setOrder(1);
         return viewResolver;
     }
+    
+   
 }

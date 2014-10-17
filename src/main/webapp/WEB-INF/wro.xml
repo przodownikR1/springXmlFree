@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="http://www.isdc.ro/wro">
+	<group name="main">
+		<css>/resources/less/bootstrap.less</css>
+		<js>/resources/js/vendor/jquery/jquery-1.10.2.min.js</js>
+		<js>/resources/js/vendor/bootstrap/affix.js</js>
+		<js>/resources/js/vendor/bootstrap/alert.js</js>
+		<js>/resources/js/vendor/bootstrap/button.js</js>
+		<js>/resources/js/vendor/bootstrap/carousel.js</js>
+		<js>/resources/js/vendor/bootstrap/collapse.js</js>
+		<js>/resources/js/vendor/bootstrap/dropdown.js</js>
+		<js>/resources/js/vendor/bootstrap/modal.js</js>
+		<js>/resources/js/vendor/bootstrap/tooltip.js</js>
+		<js>/resources/js/vendor/bootstrap/popover.js</js>
+		<js>/resources/js/vendor/bootstrap/scrollspy.js</js>
+		<js>/resources/js/vendor/bootstrap/tab.js</js>
+		<js>/resources/js/vendor/bootstrap/transition.js</js>
+
+	</group>
+</groups>
