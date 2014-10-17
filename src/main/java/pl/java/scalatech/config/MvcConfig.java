@@ -1,5 +1,6 @@
 package pl.java.scalatech.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 import org.springframework.http.MediaType;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.View;
@@ -62,27 +64,16 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private Environment env;
-/*
-    @Bean
-    @Primary
-    public ViewResolver contentNegotiatingViewResolver(final ViewResolver soyViewResolver) throws Exception {
-        ContentNegotiatingViewResolver cnvr = new ContentNegotiatingViewResolver();
-        cnvr.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        List resolvers = Lists.newArrayList(new BeanNameViewResolver(), templateResolver());
-        cnvr.setViewResolvers(resolvers);
-        Map<String, String> mediaTypes = new HashMap<>();
-        mediaTypes.put("html", "text/html");
-        mediaTypes.put("pdf", "application/pdf");
-        mediaTypes.put("xls", "application/vnd.ms-excel");
-        mediaTypes.put("xml", "application/xml");
-        mediaTypes.put("json", "application/json");
-        cnvr.setMediaTypes(mediaTypes);
-        return cnvr;
-        
-    }*/
 
-    
-    
+    @Bean
+    public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
+        List<ViewResolver> resolvers = Lists.newArrayList(new BeanNameViewResolver(), viewResolver());
+        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+        resolver.setViewResolvers(resolvers);
+        resolver.setContentNegotiationManager(manager);
+        return resolver;
+    }
+
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(true).favorParameter(true).parameterName("mediaType").ignoreAcceptHeader(false)
@@ -164,7 +155,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         return templateEngine;
     }
 
-   @Bean
+    @Bean
     public ViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
