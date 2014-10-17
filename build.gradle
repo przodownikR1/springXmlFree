@@ -50,7 +50,7 @@ sourceSets {
         compile ("org.springframework:spring-aspects:${springVersion}")
         compile ("org.springframework:spring-webmvc:${springVersion}")
         compile ("org.thymeleaf:thymeleaf:${thymeleafVersion}")
-        compile ("org.thymeleaf:thymeleaf-spring3:${thymeleafVersion}")
+        compile ("org.thymeleaf:thymeleaf-spring4:${thymeleafVersion}")
         compile ("javax.servlet:javax.servlet-api:${servletVersion}")
         
         compile("org.webjars:jquery:2.1.1")

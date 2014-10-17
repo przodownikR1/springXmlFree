@@ -1,7 +1,9 @@
 package pl.java.scalatech.config;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.http.MediaType;
@@ -34,14 +37,14 @@ import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.util.UrlPathHelper;
-import org.thymeleaf.spring3.SpringTemplateEngine;
-import org.thymeleaf.spring3.view.ThymeleafViewResolver;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
-import pl.java.scalatech.interceptor.PerformanceInterceptor;
-
 import com.google.common.collect.Lists;
+
+import pl.java.scalatech.interceptor.PerformanceInterceptor;
 
 /**
  * @author Sławomir Borowiec
@@ -59,17 +62,27 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private Environment env;
-
+/*
     @Bean
     @Primary
     public ViewResolver contentNegotiatingViewResolver(final ViewResolver soyViewResolver) throws Exception {
-        final ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
+        ContentNegotiatingViewResolver cnvr = new ContentNegotiatingViewResolver();
+        cnvr.setOrder(Ordered.HIGHEST_PRECEDENCE);
         List resolvers = Lists.newArrayList(new BeanNameViewResolver(), templateResolver());
-        contentNegotiatingViewResolver.setViewResolvers(resolvers);
-        contentNegotiatingViewResolver.setDefaultViews(Lists.<View> newArrayList(new MappingJackson2JsonView()));
-        return contentNegotiatingViewResolver;
-    }
+        cnvr.setViewResolvers(resolvers);
+        Map<String, String> mediaTypes = new HashMap<>();
+        mediaTypes.put("html", "text/html");
+        mediaTypes.put("pdf", "application/pdf");
+        mediaTypes.put("xls", "application/vnd.ms-excel");
+        mediaTypes.put("xml", "application/xml");
+        mediaTypes.put("json", "application/json");
+        cnvr.setMediaTypes(mediaTypes);
+        return cnvr;
+        
+    }*/
 
+    
+    
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(true).favorParameter(true).parameterName("mediaType").ignoreAcceptHeader(false)
@@ -139,8 +152,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
             templateResolver.setCacheable(false);
 
         }
-        // TODO
-        templateResolver.setCacheable(false);
         templateResolver.setCharacterEncoding("UTF-8");
         templateResolver.setOrder(2);
         return templateResolver;
@@ -153,7 +164,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         return templateEngine;
     }
 
-    @Bean
+   @Bean
     public ViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
