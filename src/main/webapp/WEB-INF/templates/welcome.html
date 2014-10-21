@@ -21,7 +21,7 @@
   This content is only shown to users.
 </div>
 <br />
-Logged user: <span sec:authentication="name">Somebody </span>
+Logged user: <span sec:authentication="name">Bob</span>
 <br />
 
 <br />
@@ -46,7 +46,7 @@ Logged user: <span sec:authentication="name">someUser</span>
 <div th:if="${currentUser!=null}">
 <form th:action="@{/logout}" method="post">
          <input type="submit" value="Log out" class="btn btn-primary btn-large"/>
-             <!-- <input th:name="${_csrf.parameterName}" type="hidden" th:value="${_csrf.token}" />  -->
+             <input th:name="${_csrf.parameterName}" type="hidden" th:value="${_csrf.token}" /> 
           
 </form>
   <p th:text="${currentUser.login}">jan kowalski</p>

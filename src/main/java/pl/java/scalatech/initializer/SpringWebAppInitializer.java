@@ -9,6 +9,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
@@ -22,30 +24,31 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import pl.java.scalatech.config.AppConfig;
 import pl.java.scalatech.config.MvcConfig;
-
+@Slf4j
 public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
+        log.info("+++                    getRootConfigClasses");
         return new Class<?>[] { AppConfig.class };
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
+        log.info("+++                    getServletConfigClasses");
         return new Class<?>[] { MvcConfig.class };
     }
 
     @Override
     protected String[] getServletMappings() {
+        log.info("+++                    getServletMappings");
         return new String[] { "/" };
     }
 
-    @Override
+   @Override
     protected void registerContextLoaderListener(ServletContext servletContext) {
+        log.info("()()()()                        registerContextLoaderListener");
         super.registerContextLoaderListener(servletContext);
-        servletContext.addListener(new HttpSessionEventPublisher());
-        DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
-        Dynamic filter = servletContext.addFilter("springSecurityFilterChain", delegatingFilterProxy);
-        filter.addMappingForUrlPatterns(null, true, "/*");
+    
     }
 
     private static final String CONFIG_LOCATION = "pl.java.scalatech.config";
@@ -53,6 +56,7 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+        log.info("+++                                              onStartup!!!");
         WebApplicationContext context = getContext();
         servletContext.addListener(new ContextLoaderListener(context));
         servletContext.setInitParameter("defaultHtmlEscape", "true");
@@ -60,11 +64,20 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping(MAPPING_URL);
-
+        securityFilter(servletContext);
         encodingFilter(servletContext);
         registerShallowEtagHeaderFilter(servletContext);
         registerHiddenHttpMethodFilter(servletContext);
+        
 
+    }
+    
+    private void securityFilter(ServletContext servletContext){
+        servletContext.addListener(new HttpSessionEventPublisher());
+        DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
+        Dynamic filter = servletContext.addFilter("springSecurityFilterChain", delegatingFilterProxy);
+        filter.addMappingForUrlPatterns(null, true, "/*");
+        log.info("+++                        register security filter");
     }
 
     private AnnotationConfigWebApplicationContext getContext() {

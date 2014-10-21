@@ -61,7 +61,7 @@ public class SecurityBasicConfig extends WebSecurityConfigurerAdapter {
               .antMatchers("/api/business**").access("hasRole('ROLE_ADMIN') and hasRole('ROLE_BUSINESS')")
               .anyRequest().authenticated();
             
-            http.csrf().disable()
+            http
             .formLogin()
             .loginPage("/welcome").failureUrl("/welcome?error=true").successHandler(authSuccessHandler).defaultSuccessUrl("/welcome")
             .permitAll()
