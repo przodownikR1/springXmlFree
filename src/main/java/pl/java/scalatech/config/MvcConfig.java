@@ -64,7 +64,10 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Autowired
     private Environment env;
 
-   
+    @Bean
+    public DomainClassConverter<?> domainClassConverter() {
+        return new DomainClassConverter<>(mvcConversionService());
+    }
 
     @Bean
     public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
