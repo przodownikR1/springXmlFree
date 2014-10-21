@@ -1,6 +1,5 @@
 package pl.java.scalatech.service.invoice.impl;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -11,9 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pl.java.scalatech.domain.Invoice;
-import pl.java.scalatech.domain.InvoiceType;
 import pl.java.scalatech.repository.InvoiceRepository;
 import pl.java.scalatech.service.invoice.InvoiceService;
+import pl.java.scalatech.tool.InvoiceGenerator;
 
 /**
  * @author Sławomir Borowiec 
@@ -31,9 +30,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceServiceImpl(InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
         Date date = new Date(LocalDate.of(2015, 1, 1).toEpochDay());
-        invoiceRepository.save(new Invoice.InvoiceBuilder("slawek", new BigDecimal(12), InvoiceType.BUSINESS, date).build());
-        date = new Date(LocalDate.of(2015, 1, 2).toEpochDay());
-        invoiceRepository.save(new Invoice.InvoiceBuilder("slawek2", new BigDecimal(12), InvoiceType.BUSINESS, date).build());
+    }
+    @Override
+    @Transactional
+    public void generateInvoices(){
+        InvoiceGenerator.generate().forEach(in->save(in));
     }
 
     @Override
@@ -42,6 +43,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    @Transactional
     public Invoice save(Invoice invoice) {
         return invoiceRepository.save(invoice);
     }

@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configurable
 @EnableTransactionManagement
 @ComponentScan(basePackages="pl.java.scalatech.service",useDefaultFilters=false,includeFilters={@Filter(Service.class)})
-@Import(value={RepositoryConfiguration.class,DsConfig.class})
+@Import(value={RepositoryConfiguration.class,DsConfig.class,EncryptConfig.class})
 public class ServiceConfig {
 
 }

@@ -1,10 +1,10 @@
 package pl.java.scalatech.domain;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import groovy.transform.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +12,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Max;
@@ -30,6 +31,8 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Sławomir Borowiec
@@ -81,46 +84,9 @@ public class Invoice extends AuditableEntity {
     @XmlAttribute(name = "type")
     @Column(name = "invoice_type")
     private InvoiceType type;
-
-    public Invoice(InvoiceBuilder invoiceBuilder) {
-        this.name = checkNotNull(invoiceBuilder.name, "invoice name can't be null");
-        this.payDate = checkNotNull(invoiceBuilder.payDate, "invoice payDate can't be null");
-        this.amount = checkNotNull(invoiceBuilder.amount, "invoice amount can't be null");
-        this.type = checkNotNull(invoiceBuilder.type, "invoice type can't be null");
-    }
-
-    public static class InvoiceBuilder {
-        private final String name;
-        private boolean paid;
-        private Date createDate;
-        private final Date payDate;
-
-        private String description;
-        private final BigDecimal amount;
-        private final InvoiceType type;
-
-        public InvoiceBuilder(String name, BigDecimal amount, InvoiceType type, Date payDate) {
-            this.name = name;
-
-            this.amount = amount;
-            this.type = type;
-            this.payDate = payDate;
-            this.createDate = new Date();
-        }
-
-        public InvoiceBuilder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public InvoiceBuilder createDate(Date createDate) {
-            this.createDate = createDate;
-            return this;
-        }
-
-        public Invoice build() {
-            return new Invoice(this);
-        }
-    }
+    
+    @OneToMany
+    
+    private List<Product> products = Lists.newArrayList();
 
 }

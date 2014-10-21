@@ -17,7 +17,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.repository.support.DomainClassConverter;
-import org.springframework.format.support.FormattingConversionService;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -32,7 +32,6 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.util.UrlPathHelper;
@@ -64,9 +63,18 @@ public class MvcConfig extends WebMvcConfigurationSupport {
     @Autowired
     private Environment env;
 
+
+   
+    
     @Bean
     public DomainClassConverter<?> domainClassConverter() {
         return new DomainClassConverter<>(mvcConversionService());
+    }
+    
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+   /* registry.addFormatter(getGenreFormatter());
+    registry.addFormatter(getAuthorFormatter());*/
     }
 
     @Bean

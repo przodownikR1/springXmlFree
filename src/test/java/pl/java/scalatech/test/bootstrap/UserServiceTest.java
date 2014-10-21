@@ -45,7 +45,6 @@ public class UserServiceTest {
         // act
         userService.populate();
         // assert
-        verify(userRepositoryMock, times(2)).save(any(User.class));
     }
 
     @Test

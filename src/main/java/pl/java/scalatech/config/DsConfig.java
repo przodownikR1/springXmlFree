@@ -17,14 +17,13 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * @author Sławomir Borowiec 
- * Module name : spring4WithoutXml
- * Creating time :  25 lip 2014 12:13:23
- 
+ * @author Sławomir Borowiec
+ *         Module name : spring4WithoutXml
+ *         Creating time : 25 lip 2014 12:13:23
  */
 @EnableTransactionManagement
 @PropertySource("classpath:ds.properties")
-@Import(value={PropertiesLoader.class})
+@Import(value = { PropertiesLoader.class })
 @EnableJpaRepositories("pl.java.scalatech.repository")
 public class DsConfig {
     @Value("${hibernate.dialect}")
@@ -35,11 +34,16 @@ public class DsConfig {
     private String ddlGenerate;
     @Value("${hibernate.show.sql}")
     private boolean formatSql;
-    
+
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
     }
+
+    /*@Bean
+    public FullTextEntityManager fullTextEntityManager() {
+        return Search.getFullTextEntityManager(entityManagerFactory().createEntityManager());
+    }*/
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -55,8 +59,8 @@ public class DsConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", ddlGenerate);
         properties.setProperty("hibernate.dialect", dialect);
-        properties.setProperty("hibernate.show_sql", ""+sqlShowFlag);
-        properties.setProperty("hibernate.format_sql", ""+formatSql);
+        properties.setProperty("hibernate.show_sql", "" + sqlShowFlag);
+        properties.setProperty("hibernate.format_sql", "" + formatSql);
         return properties;
     }
 

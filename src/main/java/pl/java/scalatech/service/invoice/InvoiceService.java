@@ -18,5 +18,6 @@ public interface InvoiceService {
     Invoice findByName(String name);
     Invoice findById(Long id);
     void removeInvoice(Invoice invoice);
+    void generateInvoices();
     
 }

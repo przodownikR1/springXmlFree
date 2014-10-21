@@ -72,6 +72,9 @@ sourceSets {
         compile ("javax.validation:validation-api:${javaxValidationVersion}")
         compile ("org.hibernate:hibernate-validator:${hibernateValidatorVersion}")
         compile ("org.hibernate:hibernate-core:${hibernateVersion}")
+        
+        compile ('org.hibernate:hibernate-search-orm:4.5.1.Final')
+        
         compile ("javax.el:el-api:2.2")
         compile ("org.glassfish.web:el-impl:2.2")
         
