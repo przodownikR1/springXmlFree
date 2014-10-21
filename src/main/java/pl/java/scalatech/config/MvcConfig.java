@@ -1,5 +1,6 @@
 package pl.java.scalatech.config;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -43,6 +44,7 @@ import ro.isdc.wro.manager.factory.ConfigurableWroManagerFactory;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
 
 import com.google.common.collect.Lists;
+import com.google.common.io.ByteStreams;
 
 /**
  * @author Sławomir Borowiec
@@ -80,11 +82,23 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/META-INF/resources/webjars/").setCachePeriod(31556926);
+        registry.addResourceHandler("/favicon.ico").addResourceLocations("/images/favicon.png");
         registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
         registry.addResourceHandler("/images/**").addResourceLocations("/images/").setCachePeriod(31556926);
         registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
     }
 
+    @Bean
+   
+    public String indices() throws IOException {
+    return resource("/indices.json");
+    }
+    
+    
+    private String resource(String location) throws IOException {
+        return new String(ByteStreams.toByteArray(MvcConfig.class.getResourceAsStream(location)));
+        }
+    
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(perfInterceptor());
@@ -136,10 +150,10 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
-        if (profiles.contains("dev")) {
+      /*  if (profiles.contains("dev")) {*/
             templateResolver.setCacheable(false);
 
-        }
+        /*}*/
         templateResolver.setCharacterEncoding("UTF-8");
         templateResolver.setOrder(2);
         return templateResolver;
