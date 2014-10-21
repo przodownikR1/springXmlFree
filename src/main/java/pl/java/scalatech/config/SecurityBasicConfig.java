@@ -61,7 +61,7 @@ public class SecurityBasicConfig extends WebSecurityConfigurerAdapter {
               .antMatchers("/api/business**").access("hasRole('ROLE_ADMIN') and hasRole('ROLE_BUSINESS')")
               .anyRequest().authenticated();
             
-            http
+            http.csrf().disable()
             .formLogin()
             .loginPage("/welcome").failureUrl("/welcome?error=true").successHandler(authSuccessHandler).defaultSuccessUrl("/welcome")
             .permitAll()
@@ -80,6 +80,7 @@ public class SecurityBasicConfig extends WebSecurityConfigurerAdapter {
         }
           @Autowired
           public void configureGlobal(AuthenticationManagerBuilder auth,PasswordEncoder passwordEncoder) throws Exception {
+            
           //test=$2a$10$aX5e.eGXfbujQeQ1z1sP2.6p0z08Nu4IwGv/Qyik6UIFHltglwrhm
           auth.inMemoryAuthentication().passwordEncoder(passwordEncoder)
           .withUser("przodownik").password("$2a$10$aX5e.eGXfbujQeQ1z1sP2.6p0z08Nu4IwGv/Qyik6UIFHltglwrhm").roles("USER").and()
