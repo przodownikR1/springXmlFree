@@ -9,7 +9,7 @@ import ro.isdc.wro.http.ConfigurableWroFilter;
 import ro.isdc.wro.manager.factory.ConfigurableWroManagerFactory;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
 
-@Configuration
+//@Configuration
 public class WroConfig {
     public WroManagerFactory wroManagerFactory() {
         ConfigurableWroManagerFactory wroManagerFactory = new ConfigurableWroManagerFactory();

@@ -93,7 +93,7 @@
 
 								<form th:action="@{/logout}" method="post">
 									<button type="submit">Log out</button>
-								<!-- 	<div th:text="${currentUser.login}"></div> -->
+								   	<div th:text="${currentUser.username}"></div>
 								     <input th:name="${_csrf.parameterName}" type="hidden"
 										th:value="${_csrf.token}" /> 
 								</form>

@@ -3,7 +3,6 @@ package pl.java.scalatech.config;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 import lombok.extern.slf4j.Slf4j;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -42,8 +40,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
 import pl.java.scalatech.interceptor.PerformanceInterceptor;
-import ro.isdc.wro.manager.factory.ConfigurableWroManagerFactory;
-import ro.isdc.wro.manager.factory.WroManagerFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.io.ByteStreams;
@@ -91,7 +87,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-   
     public String indices() throws IOException {
     return resource("/indices.json");
     }
