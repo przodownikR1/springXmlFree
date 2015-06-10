@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <property scope="context" name="pattern_stdout"
-        value="%highlight(%.-5level)|%green(%date{yyyy-MM-dd HH:mm:ss.SSS})|%boldMagenta([%thread])|%yellow(%logger{70}:%boldYellow(%line)) - %msg%n%red(%rEx)" />
-    <property scope="context" name="pattern_log" value="%-4relative [%thread] %-5level %logger{35} - %msg %n"/>
+        value="%highlight(%.-5level)|%green(%date{yyyy-MM-dd HH:mm:ss.SSS})|%boldMagenta([%thread])|%yellow(%logger{70}:%boldYellow(%line)) %X{req.remoteHost} %X{req.requestURI}%n%d  - %msg%n%red(%rEx)" />
+    <property scope="context" name="pattern_log" value="%-4relative [%thread] %-5level %logger{35}  %X{req.remoteHost} %X{req.requestURI}%n%d  - %msg %n"/>
     <property scope="context" name="pattern_audit" value="%m %throwable{0}%n" />    
-    <property scope="context" name="pattern_log2" value="%d{yyyy/MM/dd HH:mm:ss,SSS} [%thread] %-5level %logger{36} - %m %throwable{0}%n" />
+    <property scope="context" name="pattern_log2" value="%d{yyyy/MM/dd HH:mm:ss,SSS} [%thread] %-5level %logger{36}  %X{req.remoteHost} %X{req.requestURI}%n%d  - %m %throwable{0}%n" />
     <property scope="context" name="pattern_sql" value="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread][%logger{0}] %m%n" />
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
