@@ -29,6 +29,7 @@ public class AuditTest {
     private ApplicationContext context;
     
     private Authentication authentication;
+   
 
     @Before
     public void init() {

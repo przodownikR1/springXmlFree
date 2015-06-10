@@ -2,9 +2,9 @@ package pl.java.scalatech.initializer;
 
 import java.util.EnumSet;
 
-import javax.servlet.FilterRegistration.Dynamic;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
+import javax.servlet.FilterRegistration.Dynamic;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -24,6 +24,8 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import pl.java.scalatech.config.AppConfig;
 import pl.java.scalatech.config.MvcConfig;
+import ch.qos.logback.classic.helpers.MDCInsertingServletFilter;
+
 @Slf4j
 public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -44,11 +46,11 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
         return new String[] { "/" };
     }
 
-   @Override
+    @Override
     protected void registerContextLoaderListener(ServletContext servletContext) {
         log.info("()()()()                        registerContextLoaderListener");
         super.registerContextLoaderListener(servletContext);
-    
+
     }
 
     private static final String CONFIG_LOCATION = "pl.java.scalatech.config";
@@ -68,11 +70,11 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
         encodingFilter(servletContext);
         registerShallowEtagHeaderFilter(servletContext);
         registerHiddenHttpMethodFilter(servletContext);
-        
+        mdcFilter(servletContext);
 
     }
-    
-    private void securityFilter(ServletContext servletContext){
+
+    private void securityFilter(ServletContext servletContext) {
         servletContext.addListener(new HttpSessionEventPublisher());
         DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
         Dynamic filter = servletContext.addFilter("springSecurityFilterChain", delegatingFilterProxy);
@@ -100,9 +102,21 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
         return shallowEtagHeaderFilter;
     }
 
+    private FilterRegistration.Dynamic mdcFilter(ServletContext context) {
+        FilterRegistration.Dynamic mdcFilter = context.addFilter("mdc", new MDCInsertingServletFilter());
+        mdcFilter.addMappingForUrlPatterns(null, false, "/*");
+        return mdcFilter;
+    }
+
     private FilterRegistration.Dynamic registerHiddenHttpMethodFilter(ServletContext servletContext) {
         FilterRegistration.Dynamic hiddenHttpMethodFilter = servletContext.addFilter("hiddenHttpMethodFilter", new HiddenHttpMethodFilter());
         hiddenHttpMethodFilter.addMappingForServletNames(EnumSet.allOf(DispatcherType.class), true, "dispatcher");
         return hiddenHttpMethodFilter;
+    }
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        registration.setInitParameter("defaultHtmlEscape", "true");
+        registration.setInitParameter("spring.profiles.active", "default");
     }
 }

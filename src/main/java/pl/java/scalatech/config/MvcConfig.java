@@ -30,6 +30,7 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.resource.GzipResourceResolver;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.util.UrlPathHelper;
@@ -81,9 +82,11 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/META-INF/resources/webjars/").setCachePeriod(31556926);
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/images/favicon.png");
-        registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
+        registry.addResourceHandler("/favicon2.ico").addResourceLocations("/images/favicon.ico");
+        registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926).resourceChain(true).addResolver(new GzipResourceResolver());
         registry.addResourceHandler("/images/**").addResourceLocations("/images/").setCachePeriod(31556926);
-        registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
+        registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926).resourceChain(true).addResolver(new GzipResourceResolver());
+
     }
 
     @Bean
