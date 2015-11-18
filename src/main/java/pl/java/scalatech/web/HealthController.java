@@ -1,5 +1,7 @@
 package pl.java.scalatech.web;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +28,10 @@ public class HealthController {
     @RequestMapping(value = "/api/appContext", method = RequestMethod.GET)
     public ResponseEntity<String> appContext() {
         List<String> names = Lists.newArrayList(applicationContext.getBeanDefinitionNames());
-        names.sort((String s1, String s2) -> s1.compareTo(s2));
-        String appContext = Joiner.on("<br/>").join(names);
-        log.info("beans : {}", names);
+        List<String> result = names.stream().filter(t->t.contains(".")).map(t -> t.substring(t.lastIndexOf(".")+1, t.length())).collect(toList());
+        result.sort((String s1, String s2) -> s1.compareTo(s2));
+        String appContext = Joiner.on("<br/>").join(result);
+        log.info("beans : {}", result);
         return new ResponseEntity<>(appContext, HttpStatus.OK);
     }
 
