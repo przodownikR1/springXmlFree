@@ -4,8 +4,6 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
